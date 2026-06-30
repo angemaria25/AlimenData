@@ -1,0 +1,40 @@
+name: alimendata
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: alimendata_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-alimendata}
+      POSTGRES_USER: ${POSTGRES_USER:-alimendata_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-alimendata_secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - alimendata_network
+
+  backend:
+    build: ./backend
+    container_name: alimendata_backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-alimendata_user}:${POSTGRES_PASSWORD:-alimendata_secret}@db:5432/${POSTGRES_DB:-alimendata}
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - alimendata_network
+
+volumes:
+  pgdata:
+
+networks:
+  alimendata_network:
+    driver: bridge
