@@ -1,0 +1,36 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Los archivos de migraciones de Alembic deben versionarse en Git
+# (NO ignorar backend/migrations/versions/*.py)
+
+# Docker
+pgdata/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database seeds (generated) - dentro de backend/
+backend/database/seeds/*.csv
+backend/database/seeds/*.parquet
+backend/database/seeds/*.png 
+backend/database/seeds/viz_test/
